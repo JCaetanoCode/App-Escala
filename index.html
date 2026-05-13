@@ -88,6 +88,46 @@
       gap: 15px;
     }
 
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
+
+    .campos-fixos {
+      background: #f0fdf4;
+      border: 2px solid #00aa66;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .campos-fixos h4 {
+      color: #006633;
+      margin-bottom: 15px;
+      font-size: 1.1em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .campos-veiculo {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .campos-veiculo h4 {
+      color: #333;
+      margin-bottom: 15px;
+      font-size: 1em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
     .area-observacao {
       background: #f0f8ff;
       border: 1px solid #b8d4f0;
@@ -154,22 +194,68 @@
       box-shadow: 0 4px 12px rgba(0,170,102,0.3);
     }
 
+    .btn-limpar {
+      background: #666666;
+    }
+
+    .btn-limpar:hover {
+      background: #555555;
+    }
+
     .lista {
       margin-top: 25px;
+    }
+
+    .grupo-veiculos {
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      border-radius: 15px;
+      margin-bottom: 25px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    .grupo-header {
+      background: #f0fdf4;
+      padding: 15px 20px;
+      border-bottom: 2px solid #00aa66;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .grupo-header h4 {
+      color: #006633;
+      font-size: 1.1em;
+    }
+
+    .grupo-info {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    .grupo-info span {
+      display: flex;
+      align-items: center;
+      gap: 5px;
     }
 
     .item {
       background: #ffffff;
       border-left: 5px solid #00aa66;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 12px;
+      padding: 15px 20px;
+      margin: 10px;
+      border-radius: 10px;
       display: grid;
       grid-template-columns: 1fr auto;
       gap: 15px;
       align-items: start;
       transition: 0.3s;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
       border: 1px solid #e8e8e8;
     }
 
@@ -227,6 +313,18 @@
 
     .btn-remover:hover {
       background: #cc0000;
+    }
+
+    .btn-remover-grupo {
+      background: #cc0000;
+      padding: 8px 15px;
+      width: auto;
+      border-radius: 8px;
+      font-size: 0.9em;
+    }
+
+    .btn-remover-grupo:hover {
+      background: #ff0000;
     }
 
     .botoes-exportacao {
@@ -350,6 +448,12 @@
       background: #00aa66;
     }
 
+    .separador {
+      border: none;
+      border-top: 2px dashed #e0e0e0;
+      margin: 15px 0;
+    }
+
     /* Rodapé personalizado */
     .rodape {
       text-align: center;
@@ -377,12 +481,6 @@
       color: #666;
       font-size: 0.95em;
       line-height: 1.8;
-    }
-
-    .rodape-info span {
-      display: inline-block;
-      margin: 0 10px;
-      color: #ccc;
     }
 
     .rodape-tecnologias {
@@ -450,8 +548,17 @@
         grid-template-columns: 1fr;
       }
 
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
       .botoes-exportacao {
         grid-template-columns: 1fr;
+      }
+
+      .grupo-header {
+        flex-direction: column;
+        align-items: flex-start;
       }
 
       .rodape {
@@ -468,10 +575,13 @@
 
     <div class="indicadores" id="indicadores">
       <div class="indicador">
-        📊 Total: <span class="contador" id="totalItens">0</span>
+        📊 Total de Veículos: <span class="contador" id="totalItens">0</span>
       </div>
       <div class="indicador">
         ⚠️ Atenção: <span class="contador contador-atencao" id="totalAtencao">0</span>
+      </div>
+      <div class="indicador">
+        🚛 Rotas: <span class="contador" id="totalRotas">0</span>
       </div>
     </div>
 
@@ -480,54 +590,67 @@
       <div class="card">
         <h3>📝 Cadastro de Escala</h3>
         
-        <label>Turno</label>
-        <select id="turno">
-          <option>Turno A</option>
-          <option>Turno B</option>
-          <option>Turno C</option>
-        </select>
+        <!-- Campos Fixos -->
+        <div class="campos-fixos">
+          <h4>🔒 Dados Fixos da Rota</h4>
+          
+          <label>Turno</label>
+          <select id="turno">
+            <option>Turno A</option>
+            <option>Turno B</option>
+            <option>Turno C</option>
+          </select>
 
-        <div class="grid-2">
-          <div>
-            <label>📍 Origem</label>
-            <input type="text" id="origem" placeholder="Ex: Usina">
+          <div class="grid-2">
+            <div>
+              <label>📍 Origem</label>
+              <input type="text" id="origem" placeholder="Ex: Fazenda Itapoã">
+            </div>
+            <div>
+              <label>🎯 Destino</label>
+              <input type="text" id="destino" placeholder="Ex: Usina">
+            </div>
           </div>
-          <div>
-            <label>🎯 Destino</label>
-            <input type="text" id="destino" placeholder="Ex: Fazenda Sta Catarina">
+
+          <label>Tipo de Veículo</label>
+          <select id="tipo">
+            <option>🚜 Trator</option>
+            <option>🚛 Caminhão</option>
+            <option>🚙 Veículo</option>
+          </select>
+        </div>
+
+        <hr class="separador">
+
+        <!-- Campos do Veículo -->
+        <div class="campos-veiculo">
+          <h4>🚛 Dados do Veículo</h4>
+          
+          <label>Veículo (Número/Placa)</label>
+          <input type="text" id="veiculo" placeholder="Ex: 41016">
+
+          <label>Responsável</label>
+          <input type="text" id="responsavel" placeholder="Nome do operador">
+
+          <div class="area-observacao">
+            <label>📌 Observação</label>
+            <textarea id="obs" rows="2" placeholder="Ex: Preventiva, ônibus, bica..."></textarea>
+          </div>
+
+          <div class="area-atencao">
+            <span class="alerta">⚠️ ATENÇÃO</span>
+            <label>🚨 Ponto de Atenção</label>
+            <textarea id="atencao" rows="2" placeholder="Ex: Pneu furado, vazamento de óleo, farol queimado..."></textarea>
           </div>
         </div>
 
-        <div class="grid-2">
-          <div>
-            <label>Veículo</label>
-            <input type="text" id="veiculo" placeholder="Ex: 25158">
-          </div>
-          <div>
-            <label>Tipo</label>
-            <select id="tipo">
-                <option>🚛 Caminhão</option>
-                <option>🚙 Veículo</option>
-                <option>🚜 Trator</option>
-            </select>
-          </div>
-        </div>
-
-        <label>Responsável</label>
-        <input type="text" id="responsavel" placeholder="Nome do operador">
-
-        <div class="area-observacao">
-          <label>📌 Observação</label>
-          <textarea id="obs" rows="2" placeholder="Ex: Preventiva, ônibus, bica..."></textarea>
-        </div>
-
-        <div class="area-atencao">
-          <span class="alerta">⚠️ ATENÇÃO</span>
-          <label>🚨 Ponto de Atenção</label>
-          <textarea id="atencao" rows="2" placeholder="Ex: Pneu furado, vazamento de óleo, farol queimado..."></textarea>
-        </div>
-
-        <button class="btn-adicionar" onclick="adicionarItem()">➕ Adicionar à Escala</button>
+        <button class="btn-adicionar" onclick="adicionarVeiculo()">
+          ➕ Adicionar Veículo à Rota
+        </button>
+        
+        <button class="btn-limpar" onclick="limparRotaAtual()">
+          🔄 Nova Rota (Limpar Tudo)
+        </button>
       </div>
 
       <div class="card card-destaque">
@@ -611,18 +734,25 @@
     let escala = [];
     let textoWhatsApp = '';
 
-    function adicionarItem() {
+    function adicionarVeiculo() {
       const turno = document.getElementById('turno').value;
       const origem = document.getElementById('origem').value;
       const destino = document.getElementById('destino').value;
-      const veiculo = document.getElementById('veiculo').value;
       const tipo = document.getElementById('tipo').value;
+      const veiculo = document.getElementById('veiculo').value;
       const responsavel = document.getElementById('responsavel').value;
       const obs = document.getElementById('obs').value;
       const atencao = document.getElementById('atencao').value;
 
-      if (!origem || !destino || !veiculo || !responsavel) {
-        alert('❌ Preencha os campos obrigatórios: Origem, Destino, Veículo e Responsável!');
+      // Validar campos fixos
+      if (!origem || !destino) {
+        alert('❌ Preencha os campos fixos: Origem e Destino!');
+        return;
+      }
+
+      // Validar campos do veículo
+      if (!veiculo || !responsavel) {
+        alert('❌ Preencha os campos do veículo: Número e Responsável!');
         return;
       }
 
@@ -630,8 +760,8 @@
         turno,
         origem,
         destino,
-        veiculo,
         tipo,
+        veiculo,
         responsavel,
         obs,
         atencao,
@@ -639,27 +769,46 @@
         hora: new Date().toLocaleTimeString()
       });
 
-      limparCampos();
+      limparCamposVeiculo();
       atualizarLista();
       atualizarIndicadores();
-      mostrarToast('✅ Item adicionado com sucesso!', 'success');
+      mostrarToast('✅ Veículo adicionado à rota!', 'success');
     }
 
-    function limparCampos() {
-      document.getElementById('origem').value = '';
-      document.getElementById('destino').value = '';
+    function limparCamposVeiculo() {
+      // Limpa apenas os campos do veículo
       document.getElementById('veiculo').value = '';
       document.getElementById('responsavel').value = '';
       document.getElementById('obs').value = '';
       document.getElementById('atencao').value = '';
+      
+      // Foca no campo veículo para adicionar outro rapidamente
+      document.getElementById('veiculo').focus();
+    }
+
+    function limparRotaAtual() {
+      if (confirm('Tem certeza que deseja limpar todos os campos e começar uma nova rota?')) {
+        document.getElementById('turno').value = 'Turno A';
+        document.getElementById('origem').value = '';
+        document.getElementById('destino').value = '';
+        document.getElementById('tipo').value = '🚜 Trator';
+        limparCamposVeiculo();
+        mostrarToast('🔄 Campos limpos! Nova rota iniciada.', 'success');
+      }
     }
 
     function atualizarIndicadores() {
-      const totalItens = escala.length;
+      const totalVeiculos = escala.length;
       const totalAtencao = escala.filter(item => item.atencao.trim() !== '').length;
       
-      document.getElementById('totalItens').textContent = totalItens;
+      // Contar rotas únicas (turno + origem + destino)
+      const rotasUnicas = new Set(escala.map(item => 
+        `${item.turno}|${item.origem}|${item.destino}`
+      ));
+      
+      document.getElementById('totalItens').textContent = totalVeiculos;
       document.getElementById('totalAtencao').textContent = totalAtencao;
+      document.getElementById('totalRotas').textContent = rotasUnicas.size;
     }
 
     function atualizarLista() {
@@ -667,47 +816,98 @@
       lista.innerHTML = '';
 
       if (escala.length === 0) {
-        lista.innerHTML = '<p style="text-align: center; color: #999; padding: 30px;">📋 Nenhum item cadastrado na escala</p>';
+        lista.innerHTML = '<p style="text-align: center; color: #999; padding: 30px;">📋 Nenhum veículo cadastrado na escala</p>';
         return;
       }
 
+      // Agrupar por turno + origem + destino
+      const grupos = {};
+      
       escala.forEach((item, index) => {
-        const temAtencao = item.atencao.trim() !== '';
-        const temObs = item.obs.trim() !== '';
-        
-        lista.innerHTML += `
-          <div class="item ${temAtencao ? 'atencao' : ''}">
-            <div class="info">
-              <strong>${item.tipo} ${item.veiculo}</strong>
-              ${temAtencao ? '<span class="badge badge-atencao">⚠️ Atenção</span>' : ''}
-              ${temObs ? '<span class="badge badge-obs">📌 Obs</span>' : ''}
-              <br>
-              👤 <strong>Responsável:</strong> ${item.responsavel}<br>
-              📍 <strong>Origem:</strong> ${item.origem}<br>
-              🎯 <strong>Destino:</strong> ${item.destino}<br>
-              🕒 <strong>Turno:</strong> ${item.turno}<br>
-              ${temObs ? `📝 <strong>Observação:</strong> ${item.obs}<br>` : ''}
-              ${temAtencao ? `⚠️ <strong style="color: #cc0000;">ATENÇÃO:</strong> <span style="color: #cc0000;">${item.atencao}</span><br>` : ''}
-              <small style="color: #999;">📅 Cadastrado em: ${item.data} às ${item.hora}</small>
-            </div>
+        const chave = `${item.turno}|${item.origem}|${item.destino}|${item.tipo}`;
+        if (!grupos[chave]) {
+          grupos[chave] = {
+            turno: item.turno,
+            origem: item.origem,
+            destino: item.destino,
+            tipo: item.tipo,
+            veiculos: []
+          };
+        }
+        grupos[chave].veiculos.push({ ...item, index });
+      });
 
-            <div class="acoes">
-              <button class="btn-remover" onclick="removerItem(${index})">
-                🗑️ Remover
+      // Renderizar grupos
+      Object.values(grupos).forEach(grupo => {
+        const grupoId = `${grupo.turno}-${grupo.origem}-${grupo.destino}`;
+        
+        let grupoHTML = `
+          <div class="grupo-veiculos">
+            <div class="grupo-header">
+              <div>
+                <h4>🕒 ${grupo.turno} | 📍 ${grupo.origem} ➔ 🎯 ${grupo.destino}</h4>
+                <div class="grupo-info">
+                  <span>🚛 ${grupo.tipo}</span>
+                  <span>📦 ${grupo.veiculos.length} veículo(s)</span>
+                </div>
+              </div>
+              <button class="btn-remover-grupo" onclick="removerGrupo('${grupoId}')">
+                🗑️ Remover Rota
               </button>
             </div>
-          </div>
         `;
+
+        grupo.veiculos.forEach(veiculo => {
+          const temAtencao = veiculo.atencao.trim() !== '';
+          const temObs = veiculo.obs.trim() !== '';
+          
+          grupoHTML += `
+            <div class="item ${temAtencao ? 'atencao' : ''}">
+              <div class="info">
+                <strong>${veiculo.tipo} ${veiculo.veiculo}</strong>
+                ${temAtencao ? '<span class="badge badge-atencao">⚠️ Atenção</span>' : ''}
+                ${temObs ? '<span class="badge badge-obs">📌 Obs</span>' : ''}
+                <br>
+                👤 <strong>Responsável:</strong> ${veiculo.responsavel}
+                ${temObs ? `<br>📝 <strong>Observação:</strong> ${veiculo.obs}` : ''}
+                ${temAtencao ? `<br>⚠️ <strong style="color: #cc0000;">ATENÇÃO:</strong> <span style="color: #cc0000;">${veiculo.atencao}</span>` : ''}
+                <br>
+                <small style="color: #999;">📅 Cadastrado em: ${veiculo.data} às ${veiculo.hora}</small>
+              </div>
+
+              <div class="acoes">
+                <button class="btn-remover" onclick="removerVeiculo(${veiculo.index})">
+                  🗑️
+                </button>
+              </div>
+            </div>
+          `;
+        });
+
+        grupoHTML += '</div>';
+        lista.innerHTML += grupoHTML;
       });
 
       atualizarIndicadores();
     }
 
-    function removerItem(index) {
-      if (confirm('Tem certeza que deseja remover este item da escala?')) {
+    function removerVeiculo(index) {
+      if (confirm('Tem certeza que deseja remover este veículo da escala?')) {
         escala.splice(index, 1);
         atualizarLista();
-        mostrarToast('🗑️ Item removido!', 'success');
+        mostrarToast('🗑️ Veículo removido!', 'success');
+      }
+    }
+
+    function removerGrupo(grupoId) {
+      const [turno, origem, destino] = grupoId.split('-');
+      
+      if (confirm(`Tem certeza que deseja remover TODOS os veículos da rota:\n${origem} ➔ ${destino} (${turno})?`)) {
+        escala = escala.filter(item => {
+          return !(item.turno === turno && item.origem === origem && item.destino === destino);
+        });
+        atualizarLista();
+        mostrarToast('🗑️ Rota removida completamente!', 'success');
       }
     }
 
@@ -715,7 +915,7 @@
       const saida = document.getElementById('saida');
 
       if (escala.length === 0) {
-        saida.innerHTML = '❌ Nenhum item cadastrado na escala.';
+        saida.innerHTML = '❌ Nenhum veículo cadastrado na escala.';
         textoWhatsApp = '';
         return;
       }
@@ -724,6 +924,7 @@
       texto += `📅 ${new Date().toLocaleDateString()}\n`;
       texto += '━━━━━━━━━━━━━━━━━━━\n\n';
 
+      // Agrupar por turno
       const turnos = [...new Set(escala.map(i => i.turno))];
 
       turnos.forEach(turno => {
@@ -735,33 +936,37 @@
         texto += '✔️ Calibragem dos pneus\n';
         texto += '✔️ Fazer aferição no início do turno\n\n';
 
-        // Agrupar por origem
-        const origens = [...new Set(
+        // Agrupar por origem + destino
+        const rotas = [...new Set(
           escala
             .filter(i => i.turno === turno)
-            .map(i => i.origem)
+            .map(i => `${i.origem}|${i.destino}`)
         )];
 
-        origens.forEach(origem => {
+        rotas.forEach(rota => {
+          const [origem, destino] = rota.split('|');
+          
           texto += `━━━━━━━━━━━━━━━━━━━\n`;
-          texto += `📍 *ORIGEM: ${origem.toUpperCase()}*\n\n`;
+          texto += `📍 *ORIGEM:* ${origem.toUpperCase()}\n`;
+          texto += `🎯 *DESTINO:* ${destino.toUpperCase()}\n\n`;
 
-          escala
-            .filter(i => i.turno === turno && i.origem === origem)
-            .forEach(i => {
-              texto += `${i.tipo} *${i.veiculo}* — ${i.responsavel}\n`;
-              texto += `🎯 Destino: ${i.destino}\n`;
+          const veiculosRota = escala.filter(i => 
+            i.turno === turno && i.origem === origem && i.destino === destino
+          );
 
-              if (i.obs) {
-                texto += `📝 Obs: ${i.obs}\n`;
-              }
+          veiculosRota.forEach(i => {
+            texto += `${i.tipo} *${i.veiculo}* — ${i.responsavel}\n`;
 
-              if (i.atencao) {
-                texto += `⚠️ *ATENÇÃO:* ${i.atencao}\n`;
-              }
+            if (i.obs) {
+              texto += `📝 Obs: ${i.obs}\n`;
+            }
 
-              texto += '\n';
-            });
+            if (i.atencao) {
+              texto += `⚠️ *ATENÇÃO:* ${i.atencao}\n`;
+            }
+
+            texto += '\n';
+          });
         });
 
         // Resumo de atenção do turno
