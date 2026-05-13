@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Escala de Trabalho</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #f5f5f5;
+      color: #333333;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #006633;
+      font-size: 2.2em;
+    }
+
+    .topo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 25px;
+    }
+
+    .card {
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      border: 1px solid #e0e0e0;
+    }
+
+    .card-destaque {
+      border-left: 4px solid #ff8800;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555555;
+      font-weight: 600;
+      font-size: 0.9em;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 12px;
+      border-radius: 8px;
+      border: 1px solid #d0d0d0;
+      background: #ffffff;
+      color: #333333;
+      margin-bottom: 15px;
+      font-size: 1em;
+      transition: 0.3s;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: #00aa66;
+      box-shadow: 0 0 0 3px rgba(0,170,102,0.1);
+    }
+
+    input::placeholder, textarea::placeholder {
+      color: #999999;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+
+    .area-observacao {
+      background: #f0f8ff;
+      border: 1px solid #b8d4f0;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .area-observacao label {
+      color: #005599;
+    }
+
+    .area-atencao {
+      background: #fff5f5;
+      border: 1px solid #ffcccc;
+      border-left: 4px solid #cc0000;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .area-atencao label {
+      color: #cc0000;
+    }
+
+    .alerta {
+      background: #cc0000;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 10px;
+      font-size: 0.85em;
+      font-weight: bold;
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-adicionar {
+      background: #00aa66;
+    }
+
+    .btn-adicionar:hover {
+      background: #008855;
+      box-shadow: 0 4px 12px rgba(0,170,102,0.3);
+    }
+
+    .lista {
+      margin-top: 25px;
+    }
+
+    .item {
+      background: #ffffff;
+      border-left: 5px solid #00aa66;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 15px;
+      align-items: start;
+      transition: 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 1px solid #e8e8e8;
+    }
+
+    .item.atencao {
+      border-left: 5px solid #cc0000;
+      background: #fffafa;
+      border: 1px solid #ffcccc;
+    }
+
+    .info {
+      flex: 1;
+      line-height: 1.8;
+    }
+
+    .info strong {
+      color: #006633;
+      font-size: 1.1em;
+    }
+
+    .item.atencao .info strong {
+      color: #cc0000;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 15px;
+      font-size: 0.8em;
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .badge-obs {
+      background: #0066cc;
+      color: white;
+    }
+
+    .badge-atencao {
+      background: #cc0000;
+      color: white;
+    }
+
+    .acoes {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-remover {
+      background: #666666;
+      padding: 10px 15px;
+      width: auto;
+      border-radius: 8px;
+    }
+
+    .btn-remover:hover {
+      background: #cc0000;
+    }
+
+    .botoes-exportacao {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-top: 25px;
+    }
+
+    .btn-gerar {
+      background: #0066cc;
+      padding: 15px;
+      font-size: 1.1em;
+    }
+
+    .btn-gerar:hover {
+      background: #0055aa;
+      box-shadow: 0 4px 12px rgba(0,102,204,0.3);
+    }
+
+    .btn-copiar {
+      background: #008855;
+      padding: 15px;
+      font-size: 1.1em;
+    }
+
+    .btn-copiar:hover {
+      background: #006644;
+      box-shadow: 0 4px 12px rgba(0,136,85,0.3);
+    }
+
+    .saida {
+      margin-top: 25px;
+      background: #ffffff;
+      border-radius: 15px;
+      padding: 25px;
+      white-space: pre-line;
+      line-height: 1.8;
+      border: 1px solid #d0d0d0;
+      font-size: 1em;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      max-height: 500px;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .indicadores {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .indicador {
+      background: #ffffff;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 0.9em;
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+
+    .contador {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #00aa66;
+    }
+
+    .contador-atencao {
+      color: #cc0000;
+    }
+
+    h3 {
+      color: #333333;
+      margin-bottom: 15px;
+    }
+
+    .info-box {
+      background: #f9f9f9;
+      padding: 15px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #e8e8e8;
+    }
+
+    .info-box h4 {
+      color: #006633;
+    }
+
+    .atencao-box {
+      background: #fff5f5;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #ffcccc;
+    }
+
+    .atencao-box h4 {
+      color: #cc0000;
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #333;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 10px;
+      font-weight: bold;
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: #00aa66;
+    }
+
+    /* Rodapé personalizado */
+    .rodape {
+      text-align: center;
+      margin-top: 50px;
+      padding: 30px 20px;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+      border: 1px solid #e0e0e0;
+    }
+
+    .rodape-conteudo {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .rodape-autor {
+      font-size: 1.2em;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+    }
+
+    .rodape-info {
+      color: #666;
+      font-size: 0.95em;
+      line-height: 1.8;
+    }
+
+    .rodape-info span {
+      display: inline-block;
+      margin: 0 10px;
+      color: #ccc;
+    }
+
+    .rodape-tecnologias {
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .tag-tech {
+      background: #f0f0f0;
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 0.85em;
+      color: #555;
+      font-weight: 600;
+      border: 1px solid #ddd;
+    }
+
+    .tag-tech.html {
+      background: #fff4e6;
+      color: #e65100;
+      border-color: #ffcc80;
+    }
+
+    .tag-tech.css {
+      background: #e6f0ff;
+      color: #0050b3;
+      border-color: #b3d4ff;
+    }
+
+    .tag-tech.js {
+      background: #fffbe6;
+      color: #b38a00;
+      border-color: #ffe066;
+    }
+
+    .rodape-email {
+      margin-top: 15px;
+      color: #0066cc;
+      font-weight: 600;
+      font-size: 0.95em;
+    }
+
+    .rodape-copyright {
+      margin-top: 15px;
+      color: #999;
+      font-size: 0.85em;
+      border-top: 1px solid #eee;
+      padding-top: 15px;
+    }
+
+    @media(max-width: 700px) {
+      .item {
+        grid-template-columns: 1fr;
+      }
+
+      .acoes {
+        width: 100%;
+        justify-content: flex-end;
+      }
+
+      .grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .botoes-exportacao {
+        grid-template-columns: 1fr;
+      }
+
+      .rodape {
+        padding: 20px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+
+    <h1>📋 Escala de Trabalho</h1>
+
+    <div class="indicadores" id="indicadores">
+      <div class="indicador">
+        📊 Total: <span class="contador" id="totalItens">0</span>
+      </div>
+      <div class="indicador">
+        ⚠️ Atenção: <span class="contador contador-atencao" id="totalAtencao">0</span>
+      </div>
+    </div>
+
+    <div class="topo">
+
+      <div class="card">
+        <h3>📝 Cadastro de Escala</h3>
+        
+        <label>Turno</label>
+        <select id="turno">
+          <option>Turno A</option>
+          <option>Turno B</option>
+          <option>Turno C</option>
+        </select>
+
+        <div class="grid-2">
+          <div>
+            <label>📍 Origem</label>
+            <input type="text" id="origem" placeholder="Ex: Usina">
+          </div>
+          <div>
+            <label>🎯 Destino</label>
+            <input type="text" id="destino" placeholder="Ex: Fazenda Sta Catarina">
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div>
+            <label>Veículo</label>
+            <input type="text" id="veiculo" placeholder="Ex: 25158">
+          </div>
+          <div>
+            <label>Tipo</label>
+            <select id="tipo">
+                <option>🚛 Caminhão</option>
+                <option>🚙 Veículo</option>
+                <option>🚜 Trator</option>
+            </select>
+          </div>
+        </div>
+
+        <label>Responsável</label>
+        <input type="text" id="responsavel" placeholder="Nome do operador">
+
+        <div class="area-observacao">
+          <label>📌 Observação</label>
+          <textarea id="obs" rows="2" placeholder="Ex: Preventiva, ônibus, bica..."></textarea>
+        </div>
+
+        <div class="area-atencao">
+          <span class="alerta">⚠️ ATENÇÃO</span>
+          <label>🚨 Ponto de Atenção</label>
+          <textarea id="atencao" rows="2" placeholder="Ex: Pneu furado, vazamento de óleo, farol queimado..."></textarea>
+        </div>
+
+        <button class="btn-adicionar" onclick="adicionarItem()">➕ Adicionar à Escala</button>
+      </div>
+
+      <div class="card card-destaque">
+        <h3>📋 Informações Importantes</h3>
+        
+        <div class="info-box">
+          <h4>🚨 Checklist Diário</h4>
+          <br>
+          <p>✔️ Verificar óleo</p>
+          <p>✔️ Verificar água</p>
+          <p>✔️ Calibragem dos pneus</p>
+          <p>✔️ Fazer aferição no início do turno</p>
+        </div>
+
+        <div class="info-box">
+          <h4>⏰ Horários dos Turnos</h4>
+          <br>
+          <p>🕔 Turno A — 05:00 às 13:00</p>
+          <p>🕐 Turno B — 13:00 às 21:00</p>
+          <p>🕘 Turno C — 21:00 às 05:00</p>
+        </div>
+
+        <div class="atencao-box">
+          <h4>⚠️ Procedimentos de Atenção</h4>
+          <br>
+          <p>• Comunicar imediatamente à gestão</p>
+          <p>• Registrar no sistema de manutenção</p>
+          <p>• Não operar com itens críticos pendentes</p>
+          <p>• Priorizar segurança da operação</p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="lista" id="lista"></div>
+
+    <div class="botoes-exportacao">
+      <button class="btn-gerar" onclick="gerarWhatsApp()">
+        📱 Gerar Texto
+      </button>
+      <button class="btn-copiar" onclick="copiarTexto()">
+        📋 Copiar Texto
+      </button>
+    </div>
+
+    <div class="saida" id="saida"></div>
+
+    <!-- Rodapé personalizado -->
+    <footer class="rodape">
+      <div class="rodape-conteudo">
+        <div class="rodape-autor">
+          👨‍💻 Desenvolvido por Jairo
+        </div>
+        
+        <div class="rodape-info">
+          Sistema de Escala Operacional
+        </div>
+
+        <div class="rodape-tecnologias">
+          <span class="tag-tech html">HTML5</span>
+          <span class="tag-tech css">CSS3</span>
+          <span class="tag-tech js">JavaScript</span>
+        </div>
+
+        <div class="rodape-email">
+          📧 jccodeapp@gmail.com
+        </div>
+
+        <div class="rodape-copyright">
+          © 2024 Jairo - Todos os direitos reservados
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Toast de notificação -->
+  <div class="toast" id="toast"></div>
+
+  <script>
+    let escala = [];
+    let textoWhatsApp = '';
+
+    function adicionarItem() {
+      const turno = document.getElementById('turno').value;
+      const origem = document.getElementById('origem').value;
+      const destino = document.getElementById('destino').value;
+      const veiculo = document.getElementById('veiculo').value;
+      const tipo = document.getElementById('tipo').value;
+      const responsavel = document.getElementById('responsavel').value;
+      const obs = document.getElementById('obs').value;
+      const atencao = document.getElementById('atencao').value;
+
+      if (!origem || !destino || !veiculo || !responsavel) {
+        alert('❌ Preencha os campos obrigatórios: Origem, Destino, Veículo e Responsável!');
+        return;
+      }
+
+      escala.push({
+        turno,
+        origem,
+        destino,
+        veiculo,
+        tipo,
+        responsavel,
+        obs,
+        atencao,
+        data: new Date().toLocaleDateString(),
+        hora: new Date().toLocaleTimeString()
+      });
+
+      limparCampos();
+      atualizarLista();
+      atualizarIndicadores();
+      mostrarToast('✅ Item adicionado com sucesso!', 'success');
+    }
+
+    function limparCampos() {
+      document.getElementById('origem').value = '';
+      document.getElementById('destino').value = '';
+      document.getElementById('veiculo').value = '';
+      document.getElementById('responsavel').value = '';
+      document.getElementById('obs').value = '';
+      document.getElementById('atencao').value = '';
+    }
+
+    function atualizarIndicadores() {
+      const totalItens = escala.length;
+      const totalAtencao = escala.filter(item => item.atencao.trim() !== '').length;
+      
+      document.getElementById('totalItens').textContent = totalItens;
+      document.getElementById('totalAtencao').textContent = totalAtencao;
+    }
+
+    function atualizarLista() {
+      const lista = document.getElementById('lista');
+      lista.innerHTML = '';
+
+      if (escala.length === 0) {
+        lista.innerHTML = '<p style="text-align: center; color: #999; padding: 30px;">📋 Nenhum item cadastrado na escala</p>';
+        return;
+      }
+
+      escala.forEach((item, index) => {
+        const temAtencao = item.atencao.trim() !== '';
+        const temObs = item.obs.trim() !== '';
+        
+        lista.innerHTML += `
+          <div class="item ${temAtencao ? 'atencao' : ''}">
+            <div class="info">
+              <strong>${item.tipo} ${item.veiculo}</strong>
+              ${temAtencao ? '<span class="badge badge-atencao">⚠️ Atenção</span>' : ''}
+              ${temObs ? '<span class="badge badge-obs">📌 Obs</span>' : ''}
+              <br>
+              👤 <strong>Responsável:</strong> ${item.responsavel}<br>
+              📍 <strong>Origem:</strong> ${item.origem}<br>
+              🎯 <strong>Destino:</strong> ${item.destino}<br>
+              🕒 <strong>Turno:</strong> ${item.turno}<br>
+              ${temObs ? `📝 <strong>Observação:</strong> ${item.obs}<br>` : ''}
+              ${temAtencao ? `⚠️ <strong style="color: #cc0000;">ATENÇÃO:</strong> <span style="color: #cc0000;">${item.atencao}</span><br>` : ''}
+              <small style="color: #999;">📅 Cadastrado em: ${item.data} às ${item.hora}</small>
+            </div>
+
+            <div class="acoes">
+              <button class="btn-remover" onclick="removerItem(${index})">
+                🗑️ Remover
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      atualizarIndicadores();
+    }
+
+    function removerItem(index) {
+      if (confirm('Tem certeza que deseja remover este item da escala?')) {
+        escala.splice(index, 1);
+        atualizarLista();
+        mostrarToast('🗑️ Item removido!', 'success');
+      }
+    }
+
+    function gerarWhatsApp() {
+      const saida = document.getElementById('saida');
+
+      if (escala.length === 0) {
+        saida.innerHTML = '❌ Nenhum item cadastrado na escala.';
+        textoWhatsApp = '';
+        return;
+      }
+
+      let texto = '📋 *ESCALA DE TRABALHO*\n';
+      texto += `📅 ${new Date().toLocaleDateString()}\n`;
+      texto += '━━━━━━━━━━━━━━━━━━━\n\n';
+
+      const turnos = [...new Set(escala.map(i => i.turno))];
+
+      turnos.forEach(turno => {
+        texto += `🕒 *${turno.toUpperCase()}*\n\n`;
+
+        texto += '🚨 *CHECK LIST DIÁRIO* 🚨\n';
+        texto += '✔️ Verificar óleo\n';
+        texto += '✔️ Água\n';
+        texto += '✔️ Calibragem dos pneus\n';
+        texto += '✔️ Fazer aferição no início do turno\n\n';
+
+        // Agrupar por origem
+        const origens = [...new Set(
+          escala
+            .filter(i => i.turno === turno)
+            .map(i => i.origem)
+        )];
+
+        origens.forEach(origem => {
+          texto += `━━━━━━━━━━━━━━━━━━━\n`;
+          texto += `📍 *ORIGEM: ${origem.toUpperCase()}*\n\n`;
+
+          escala
+            .filter(i => i.turno === turno && i.origem === origem)
+            .forEach(i => {
+              texto += `${i.tipo} *${i.veiculo}* — ${i.responsavel}\n`;
+              texto += `🎯 Destino: ${i.destino}\n`;
+
+              if (i.obs) {
+                texto += `📝 Obs: ${i.obs}\n`;
+              }
+
+              if (i.atencao) {
+                texto += `⚠️ *ATENÇÃO:* ${i.atencao}\n`;
+              }
+
+              texto += '\n';
+            });
+        });
+
+        // Resumo de atenção do turno
+        const itensAtencao = escala.filter(i => i.turno === turno && i.atencao.trim() !== '');
+        if (itensAtencao.length > 0) {
+          texto += '🚨 *ITENS DE ATENÇÃO NESTE TURNO:*\n';
+          itensAtencao.forEach(i => {
+            texto += `• ${i.tipo} ${i.veiculo} (${i.origem} ➔ ${i.destino}): ${i.atencao}\n`;
+          });
+          texto += '\n';
+        }
+
+        texto += '⏰ *HORÁRIOS*\n';
+        texto += 'Turno A — 05:00 às 13:00\n';
+        texto += 'Turno B — 13:00 às 21:00\n';
+        texto += 'Turno C — 21:00 às 05:00\n\n';
+      });
+
+      // Resumo geral de atenção
+      const todosAtencao = escala.filter(i => i.atencao.trim() !== '');
+      if (todosAtencao.length > 0) {
+        texto += '━━━━━━━━━━━━━━━━━━━\n';
+        texto += '⚠️ *RESUMO GERAL DE ATENÇÃO*\n';
+        texto += `Total de itens críticos: ${todosAtencao.length}\n\n`;
+        todosAtencao.forEach(i => {
+          texto += `• ${i.tipo} ${i.veiculo} - ${i.origem} ➔ ${i.destino} (${i.turno})\n`;
+          texto += `  Responsável: ${i.responsavel}\n`;
+          texto += `  Problema: ${i.atencao}\n\n`;
+        });
+      }
+
+      saida.innerHTML = texto;
+      textoWhatsApp = texto;
+      
+      // Scroll suave para a saída
+      saida.scrollIntoView({ behavior: 'smooth' });
+      
+      mostrarToast('📱 Texto gerado com sucesso!', 'success');
+    }
+
+    function copiarTexto() {
+      if (!textoWhatsApp) {
+        // Se não tiver texto gerado, gera primeiro
+        gerarWhatsApp();
+      }
+
+      if (!textoWhatsApp) {
+        mostrarToast('❌ Gere o texto primeiro!', 'error');
+        return;
+      }
+
+      // Copiar para a área de transferência
+      navigator.clipboard.writeText(textoWhatsApp).then(() => {
+        mostrarToast('📋 Texto copiado para a área de transferência!', 'success');
+      }).catch(() => {
+        // Fallback para navegadores mais antigos
+        const textarea = document.createElement('textarea');
+        textarea.value = textoWhatsApp;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        mostrarToast('📋 Texto copiado!', 'success');
+      });
+    }
+
+    function mostrarToast(mensagem, tipo = '') {
+      const toast = document.getElementById('toast');
+      toast.textContent = mensagem;
+      toast.className = 'toast ' + tipo + ' show';
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
+    }
+
+    // Inicializar indicadores
+    atualizarIndicadores();
+  </script>
+
+</body>
+</html>
